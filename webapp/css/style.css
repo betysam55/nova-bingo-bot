@@ -1019,3 +1019,494 @@ body {
   from { opacity: 1; transform: translateX(-50%) translateY(0); }
   to { opacity: 0; transform: translateX(-50%) translateY(-10px); }
 }
+
+/* ─── Responsive: Tablet (≥600px) ─────────────────────────────── */
+@media (min-width: 600px) {
+  .screen {
+    max-width: 540px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  .app-header h1 {
+    font-size: 24px;
+  }
+
+  .wallet-bar {
+    padding: 10px 20px;
+  }
+
+  .wallet-info span:first-child {
+    font-size: 17px;
+  }
+
+  .section-title {
+    font-size: 17px;
+    margin: 24px 0 14px;
+  }
+
+  .room-card {
+    padding: 20px 22px;
+  }
+
+  .room-tier-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 26px;
+    border-radius: 14px;
+  }
+
+  .room-name {
+    font-size: 17px;
+  }
+
+  .room-meta {
+    font-size: 13px;
+  }
+
+  .room-bet {
+    font-size: 24px;
+  }
+
+  .room-card:hover {
+    background: var(--bg-card-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  }
+
+  .jackpot-amount {
+    font-size: 38px;
+  }
+
+  .board-options {
+    gap: 16px;
+  }
+
+  .board-option {
+    padding: 18px;
+  }
+
+  .board-option:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glow);
+  }
+
+  .board-option .mini-header-cell {
+    font-size: 9px;
+  }
+
+  .board-option .mini-cell {
+    font-size: 10px;
+  }
+
+  .board-option .board-label {
+    font-size: 15px;
+  }
+
+  .game-stat {
+    padding: 12px 16px;
+  }
+
+  .stat-value {
+    font-size: 18px;
+  }
+
+  .stat-label {
+    font-size: 11px;
+  }
+
+  .number-ball {
+    width: 96px;
+    height: 96px;
+  }
+
+  .number-ball span {
+    font-size: 38px;
+  }
+
+  .called-chip {
+    min-width: 36px;
+    height: 36px;
+    font-size: 13px;
+  }
+
+  .bingo-board {
+    gap: 6px;
+    margin: 14px 0;
+  }
+
+  .bingo-board .bingo-header {
+    font-size: 16px;
+    padding: 8px 0;
+  }
+
+  .bingo-cell {
+    font-size: 18px;
+  }
+
+  .bingo-cell.free {
+    font-size: 10px;
+  }
+
+  .bingo-btn {
+    padding: 18px;
+    font-size: 20px;
+  }
+
+  .result-icon {
+    font-size: 84px;
+  }
+
+  .result-title {
+    font-size: 38px;
+  }
+
+  .result-message {
+    font-size: 16px;
+  }
+
+  .result-prize {
+    font-size: 42px;
+  }
+
+  .result-stat-item .rs-value {
+    font-size: 22px;
+  }
+
+  .play-again-btn {
+    padding: 16px 48px;
+    font-size: 17px;
+  }
+
+  .countdown-number {
+    font-size: 120px;
+  }
+
+  .countdown-text {
+    font-size: 14px;
+    letter-spacing: 4px;
+  }
+
+  .countdown-players {
+    font-size: 15px;
+  }
+
+  .countdown-room-info {
+    font-size: 17px;
+  }
+}
+
+/* ─── Responsive: Desktop (≥1024px) ───────────────────────────── */
+@media (min-width: 1024px) {
+  .screen {
+    max-width: 680px;
+    padding: 24px 32px;
+  }
+
+  .app-header {
+    padding: 8px 0 24px;
+  }
+
+  .app-header h1 {
+    font-size: 28px;
+    letter-spacing: 2px;
+  }
+
+  .wallet-bar {
+    padding: 12px 24px;
+    border-radius: 28px;
+  }
+
+  .wallet-info span:first-child {
+    font-size: 18px;
+  }
+
+  .section-title {
+    font-size: 18px;
+    margin: 28px 0 16px;
+  }
+
+  .room-list {
+    gap: 14px;
+  }
+
+  .room-card {
+    padding: 22px 26px;
+    border-radius: 20px;
+  }
+
+  .room-tier-icon {
+    width: 56px;
+    height: 56px;
+    font-size: 28px;
+  }
+
+  .room-name {
+    font-size: 18px;
+  }
+
+  .room-meta {
+    font-size: 14px;
+    gap: 16px;
+  }
+
+  .room-fill-bar {
+    height: 4px;
+  }
+
+  .room-bet {
+    font-size: 28px;
+  }
+
+  .room-bet small {
+    font-size: 11px;
+  }
+
+  .jackpot-card {
+    padding: 32px 28px;
+    border-radius: 20px;
+  }
+
+  .jackpot-label {
+    font-size: 12px;
+    letter-spacing: 3px;
+  }
+
+  .jackpot-amount {
+    font-size: 44px;
+  }
+
+  .board-options {
+    gap: 20px;
+  }
+
+  .board-option {
+    padding: 20px;
+    border-radius: 20px;
+  }
+
+  .board-option .mini-header-cell {
+    font-size: 10px;
+    padding: 3px 0;
+  }
+
+  .board-option .mini-grid {
+    gap: 3px;
+    margin-bottom: 14px;
+  }
+
+  .board-option .mini-cell {
+    font-size: 11px;
+    border-radius: var(--radius-sm);
+  }
+
+  .board-option .board-label {
+    font-size: 16px;
+  }
+
+  .game-info-row {
+    gap: 12px;
+  }
+
+  .game-stat {
+    padding: 14px 18px;
+    border-radius: var(--radius);
+  }
+
+  .stat-icon {
+    font-size: 20px;
+  }
+
+  .stat-value {
+    font-size: 22px;
+  }
+
+  .stat-label {
+    font-size: 11px;
+  }
+
+  .called-number-display {
+    margin: 20px 0 12px;
+  }
+
+  .called-label {
+    font-size: 12px;
+    letter-spacing: 3px;
+  }
+
+  .number-ball {
+    width: 110px;
+    height: 110px;
+  }
+
+  .number-ball span {
+    font-size: 44px;
+  }
+
+  .called-numbers-strip {
+    gap: 8px;
+    padding: 12px 0;
+  }
+
+  .called-chip {
+    min-width: 40px;
+    height: 40px;
+    font-size: 14px;
+  }
+
+  .bingo-board {
+    gap: 8px;
+    margin: 18px 0;
+  }
+
+  .bingo-board .bingo-header {
+    font-size: 18px;
+    padding: 10px 0;
+    border-radius: var(--radius-sm);
+  }
+
+  .bingo-cell {
+    font-size: 20px;
+    border-radius: var(--radius-sm);
+  }
+
+  .bingo-cell.free {
+    font-size: 11px;
+  }
+
+  .bingo-cell:hover:not(.marked):not(.free) {
+    background: var(--bg-card-hover);
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+
+  .bingo-btn {
+    padding: 20px;
+    font-size: 22px;
+    border-radius: 20px;
+    letter-spacing: 4px;
+  }
+
+  .game-status {
+    font-size: 14px;
+    padding: 14px;
+  }
+
+  .result-container {
+    gap: 16px;
+  }
+
+  .result-icon {
+    font-size: 96px;
+  }
+
+  .result-title {
+    font-size: 44px;
+    letter-spacing: 3px;
+  }
+
+  .result-message {
+    font-size: 17px;
+    max-width: 400px;
+  }
+
+  .result-prize {
+    font-size: 48px;
+  }
+
+  .result-stats {
+    gap: 32px;
+    margin: 12px 0 8px;
+  }
+
+  .result-stat-item .rs-value {
+    font-size: 26px;
+  }
+
+  .result-stat-item .rs-label {
+    font-size: 11px;
+  }
+
+  .play-again-btn {
+    padding: 18px 56px;
+    font-size: 18px;
+    border-radius: 32px;
+  }
+
+  .play-again-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px var(--accent-glow-strong);
+  }
+
+  .footer-note {
+    font-size: 13px;
+    margin-top: 32px;
+    padding: 18px;
+  }
+
+  .countdown-number {
+    font-size: 140px;
+  }
+
+  .countdown-text {
+    font-size: 15px;
+    letter-spacing: 5px;
+    margin-bottom: 16px;
+  }
+
+  .countdown-players {
+    font-size: 16px;
+    margin-top: 20px;
+  }
+
+  .countdown-room-info {
+    font-size: 18px;
+  }
+
+  .toast {
+    font-size: 15px;
+    padding: 14px 28px;
+    bottom: 100px;
+  }
+}
+
+/* ─── Responsive: Wide Desktop (≥1440px) ──────────────────────── */
+@media (min-width: 1440px) {
+  .screen {
+    max-width: 760px;
+  }
+}
+
+/* ─── Hover-capable devices (mouse) ───────────────────────────── */
+@media (hover: hover) and (pointer: fine) {
+  .room-card:hover {
+    background: var(--bg-card-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  }
+
+  .board-option:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glow);
+  }
+
+  .bingo-cell:hover:not(.marked):not(.free) {
+    background: var(--bg-card-hover);
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+
+  .play-again-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px var(--accent-glow-strong);
+  }
+
+  .back-btn:hover {
+    background: var(--bg-card-hover);
+  }
+
+  .bingo-btn:not(:disabled):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px var(--accent-glow-strong);
+  }
+}
