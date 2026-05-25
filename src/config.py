@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 TELEGRAM_BOT_TOKEN: str = os.getenv("TELEGRAM_BOT_TOKEN", "")
+WEBAPP_URL: str = os.getenv("WEBAPP_URL", "")
 LOG_LEVEL: str = os.getenv("LOG_LEVEL", "INFO")
 
 

@@ -4,6 +4,7 @@ A Telegram bot for the Nova Bingo real-time multiplayer Bingo platform. Built wi
 
 ## Features
 
+- **Telegram Mini App** — full Bingo game UI with lobby, board selection, live number calling, and win verification
 - **14 slash commands** — `/start`, `/help`, `/howtoplay`, `/play`, `/rules`, `/deposit`, `/withdraw`, `/balance`, `/jackpot`, `/bonus`, `/activegames`, `/mytickets`, `/support`, `/responsiblegaming`
 - **AI-style chat** — responds to natural-language questions about gameplay, wallets, rules, and more
 - **Casino-style personality** — friendly, fast, exciting, and professional
@@ -54,11 +55,35 @@ nova-bingo-bot/
 │   │   └── errors.py       # Error handler
 │   └── utils/
 │       └── responses.py    # All response templates
+├── webapp/
+│   ├── index.html           # Mini App entry point
+│   ├── css/style.css        # Styles (dark casino theme)
+│   └── js/game.js           # Game logic & Telegram WebApp API
 ├── .env.example
 ├── requirements.txt
 ├── pyproject.toml
 └── README.md
 ```
+
+## Mini App
+
+The `webapp/` directory contains the Telegram Mini App — a complete Bingo game UI that runs inside Telegram.
+
+### Features
+- **Lobby** — browse rooms by bet amount (Bronze, Silver, Gold, Diamond)
+- **Board Selection** — pick from 4 unique randomly generated boards
+- **Live Game** — auto number calling, board marking, real-time stats
+- **Win Verification** — validates marked numbers against called numbers
+- **Responsive** — dark casino theme optimized for mobile
+
+### Hosting
+
+The Mini App must be served over **HTTPS**. Options:
+1. **GitHub Pages** — push `webapp/` to a `gh-pages` branch
+2. **Vercel / Netlify** — deploy the `webapp/` directory
+3. **Any static hosting** — just serve the files over HTTPS
+
+Once hosted, set `WEBAPP_URL` in `.env` to the URL (e.g. `https://yourdomain.com/webapp/`).
 
 ## Commands
 
@@ -84,6 +109,7 @@ nova-bingo-bot/
 | Variable | Description | Required |
 |----------|-------------|----------|
 | `TELEGRAM_BOT_TOKEN` | Bot token from @BotFather | Yes |
+| `WEBAPP_URL` | HTTPS URL where the Mini App is hosted | No (enables "Open Nova Bingo" button) |
 | `LOG_LEVEL` | Logging level (DEBUG, INFO, WARNING, ERROR) | No (default: INFO) |
 
 ## License

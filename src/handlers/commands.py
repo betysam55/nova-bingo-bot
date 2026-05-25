@@ -2,13 +2,22 @@
 
 import logging
 
-from telegram import Update
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update, WebAppInfo
 from telegram.constants import ParseMode
 from telegram.ext import Application, CommandHandler, ContextTypes
 
+from src.config import WEBAPP_URL
 from src.utils import responses
 
 logger = logging.getLogger(__name__)
+
+
+def _play_keyboard() -> InlineKeyboardMarkup | None:
+    if not WEBAPP_URL:
+        return None
+    return InlineKeyboardMarkup(
+        [[InlineKeyboardButton("🎮 Open Nova Bingo", web_app=WebAppInfo(url=WEBAPP_URL))]]
+    )
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -16,7 +25,9 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     name = user.first_name if user else "Player"
     text = responses.WELCOME.format(name=name)
     if update.message:
-        await update.message.reply_text(text, parse_mode=ParseMode.MARKDOWN)
+        await update.message.reply_text(
+            text, parse_mode=ParseMode.MARKDOWN, reply_markup=_play_keyboard()
+        )
 
 
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -36,7 +47,9 @@ async def rules(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
 async def play(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if update.message:
-        await update.message.reply_text(responses.PLAY, parse_mode=ParseMode.MARKDOWN)
+        await update.message.reply_text(
+            responses.PLAY, parse_mode=ParseMode.MARKDOWN, reply_markup=_play_keyboard()
+        )
 
 
 async def deposit(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:

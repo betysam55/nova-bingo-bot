@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Nova Bingo</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <!-- Lobby Screen -->
+  <div id="screen-lobby" class="screen active">
+    <header class="app-header">
+      <h1>🎰 Nova Bingo</h1>
+      <div class="wallet-bar">
+        <span class="wallet-icon">💰</span>
+        <span id="wallet-balance">1,000</span>
+        <span class="currency">ETB</span>
+      </div>
+    </header>
+
+    <div class="section-title">🎮 Choose a Room</div>
+    <div id="room-list" class="room-list"></div>
+
+    <div class="section-title">🏆 Jackpot</div>
+    <div class="jackpot-card">
+      <div class="jackpot-amount" id="jackpot-amount">25,000 ETB</div>
+      <div class="jackpot-label">Current Jackpot Prize</div>
+    </div>
+
+    <div class="footer-note">🍀 Play responsibly. Never bet more than you can afford.</div>
+  </div>
+
+  <!-- Board Selection Screen -->
+  <div id="screen-boards" class="screen">
+    <header class="app-header">
+      <button class="back-btn" onclick="showScreen('lobby')">← Back</button>
+      <h2 id="room-title">Room</h2>
+    </header>
+
+    <div class="section-title">🎯 Pick Your Board</div>
+    <p class="hint-text">Each board is unique. Once selected, it's locked in!</p>
+    <div id="board-options" class="board-options"></div>
+  </div>
+
+  <!-- Game Screen -->
+  <div id="screen-game" class="screen">
+    <header class="game-header">
+      <div class="game-info-row">
+        <div class="game-stat">
+          <span class="stat-label">Players</span>
+          <span class="stat-value" id="game-players">0</span>
+        </div>
+        <div class="game-stat">
+          <span class="stat-label">Prize</span>
+          <span class="stat-value" id="game-prize">0</span>
+        </div>
+        <div class="game-stat">
+          <span class="stat-label">Called</span>
+          <span class="stat-value" id="game-called-count">0</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="called-number-display">
+      <div class="called-label">Current Number</div>
+      <div class="called-number" id="current-number">--</div>
+    </div>
+
+    <div class="called-numbers-strip" id="called-numbers-strip"></div>
+
+    <div class="bingo-board" id="game-board"></div>
+
+    <button class="bingo-btn" id="bingo-btn" onclick="callBingo()" disabled>
+      🎉 BINGO!
+    </button>
+
+    <div id="game-status" class="game-status"></div>
+  </div>
+
+  <!-- Result Screen -->
+  <div id="screen-result" class="screen">
+    <div class="result-container">
+      <div class="result-icon" id="result-icon">🎉</div>
+      <h2 class="result-title" id="result-title">You Win!</h2>
+      <p class="result-message" id="result-message"></p>
+      <div class="result-prize" id="result-prize"></div>
+      <button class="play-again-btn" onclick="showScreen('lobby')">🎮 Play Again</button>
+      <p class="responsible-note">🛡️ Remember to play responsibly!</p>
+    </div>
+  </div>
+
+  <script src="js/game.js"></script>
+</body>
+</html>
