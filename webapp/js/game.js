@@ -18,9 +18,17 @@ const state = {
   gameActive: false,
   callerInterval: null,
   countdownInterval: null,
+  gameStartTime: null,
 };
 
 // ─── Room Definitions ──────────────────────────────────────────
+const TIER_ICONS = {
+  bronze: "🥉",
+  silver: "🥈",
+  gold: "🥇",
+  diamond: "💎",
+};
+
 const ROOMS = [
   {
     id: "bronze",
@@ -28,6 +36,7 @@ const ROOMS = [
     bet: 10,
     tier: "bronze",
     players: randomInt(8, 20),
+    maxPlayers: 25,
     prize: 0,
   },
   {
@@ -36,6 +45,7 @@ const ROOMS = [
     bet: 25,
     tier: "silver",
     players: randomInt(5, 15),
+    maxPlayers: 20,
     prize: 0,
   },
   {
@@ -44,6 +54,7 @@ const ROOMS = [
     bet: 50,
     tier: "gold",
     players: randomInt(3, 12),
+    maxPlayers: 15,
     prize: 0,
   },
   {
@@ -52,6 +63,7 @@ const ROOMS = [
     bet: 100,
     tier: "diamond",
     players: randomInt(2, 8),
+    maxPlayers: 10,
     prize: 0,
   },
 ];
@@ -86,14 +98,22 @@ function renderRooms() {
   list.innerHTML = ROOMS.map(
     (room) => `
     <div class="room-card ${room.tier}" onclick="joinRoom('${room.id}')">
-      <div class="room-info">
-        <div class="room-name">${room.name}</div>
-        <div class="room-details">
-          <span>👥 ${room.players} players</span>
-          <span>🏆 ${room.prize} ETB</span>
+      <div class="room-left">
+        <div class="room-tier-icon">${TIER_ICONS[room.tier]}</div>
+        <div class="room-info">
+          <div class="room-name">${room.name}</div>
+          <div class="room-meta">
+            <span><span class="live-dot"></span>${room.players} playing</span>
+            <span>🏆 ${room.prize} ETB</span>
+          </div>
+          <div class="room-fill-bar">
+            <div class="fill" style="width: ${Math.round((room.players / room.maxPlayers) * 100)}%"></div>
+          </div>
         </div>
       </div>
-      <div class="room-bet">${room.bet}<small> ETB</small></div>
+      <div class="room-right">
+        <div class="room-bet">${room.bet}<small>ETB / game</small></div>
+      </div>
     </div>
   `
   ).join("");
@@ -142,11 +162,15 @@ function generateBoard() {
 function generateBoardOptions() {
   const container = document.getElementById("board-options");
   const boards = [generateBoard(), generateBoard(), generateBoard(), generateBoard()];
+  const headers = ["B", "I", "N", "G", "O"];
 
   container.innerHTML = boards
     .map(
       (board, idx) => `
     <div class="board-option" data-board-idx="${idx}" onclick="selectBoard(${idx})">
+      <div class="mini-headers">
+        ${headers.map((h) => `<div class="mini-header-cell">${h}</div>`).join("")}
+      </div>
       <div class="mini-grid">
         ${renderMiniGrid(board)}
       </div>
@@ -210,6 +234,7 @@ function startCountdown() {
     <div class="countdown-text">Game Starting In</div>
     <div class="countdown-number" id="countdown-num">5</div>
     <div class="countdown-players">👥 ${state.currentRoom.players} players ready</div>
+    <div class="countdown-room-info">${state.currentRoom.name} — ${state.currentRoom.bet} ETB</div>
   `;
   document.body.appendChild(overlay);
 
@@ -232,8 +257,11 @@ function startCountdown() {
 function renderGameBoard() {
   const boardEl = document.getElementById("game-board");
   const headers = ["B", "I", "N", "G", "O"];
+  const headerClasses = ["h-b", "h-i", "h-n", "h-g", "h-o"];
 
-  let html = headers.map((h) => `<div class="bingo-header">${h}</div>`).join("");
+  let html = headers
+    .map((h, i) => `<div class="bingo-header ${headerClasses[i]}">${h}</div>`)
+    .join("");
 
   for (let row = 0; row < 5; row++) {
     for (let col = 0; col < 5; col++) {
@@ -297,8 +325,17 @@ function highlightCalledCell(num) {
 }
 
 // ─── Auto Caller ───────────────────────────────────────────────
+function getColumnClass(num) {
+  if (num <= 15) return "col-b";
+  if (num <= 30) return "col-i";
+  if (num <= 45) return "col-n";
+  if (num <= 60) return "col-g";
+  return "col-o";
+}
+
 function startCalling() {
   state.gameActive = true;
+  state.gameStartTime = Date.now();
   const available = [];
   for (let i = 1; i <= 75; i++) available.push(i);
   shuffleArray(available);
@@ -320,21 +357,22 @@ function startCalling() {
     state.calledNumbers.push(num);
     callIdx++;
 
-    // Update display
+    // Update ball display
+    const ball = document.getElementById("number-ball");
     const currentEl = document.getElementById("current-number");
     currentEl.textContent = num;
-    currentEl.style.animation = "none";
-    currentEl.offsetHeight; // trigger reflow
-    currentEl.style.animation = "pulse 0.5s ease";
+    ball.style.animation = "none";
+    ball.offsetHeight;
+    ball.style.animation = "ballPop 0.5s cubic-bezier(0.16, 1, 0.3, 1)";
 
     document.getElementById("game-called-count").textContent =
       state.calledNumbers.length;
 
-    // Update strip
+    // Update strip with color-coded chip
     const strip = document.getElementById("called-numbers-strip");
     strip.querySelectorAll(".called-chip").forEach((c) => c.classList.remove("latest"));
     const chip = document.createElement("div");
-    chip.className = "called-chip latest";
+    chip.className = "called-chip latest " + getColumnClass(num);
     chip.textContent = num;
     strip.appendChild(chip);
     strip.scrollLeft = strip.scrollWidth;
@@ -423,10 +461,33 @@ function endGame(won) {
   state.gameActive = false;
   clearInterval(state.callerInterval);
 
+  const elapsed = state.gameStartTime ? Math.round((Date.now() - state.gameStartTime) / 1000) : 0;
+  const minutes = Math.floor(elapsed / 60);
+  const seconds = elapsed % 60;
+  const timeStr = minutes > 0 ? minutes + "m " + seconds + "s" : seconds + "s";
+  const markedCount = state.markedCells.size - 1; // exclude free space
+
   const resultIcon = document.getElementById("result-icon");
   const resultTitle = document.getElementById("result-title");
   const resultMsg = document.getElementById("result-message");
   const resultPrize = document.getElementById("result-prize");
+  const resultStats = document.getElementById("result-stats");
+
+  // Render stats
+  resultStats.innerHTML = `
+    <div class="result-stat-item">
+      <span class="rs-value">${state.calledNumbers.length}</span>
+      <span class="rs-label">Called</span>
+    </div>
+    <div class="result-stat-item">
+      <span class="rs-value">${markedCount}</span>
+      <span class="rs-label">Marked</span>
+    </div>
+    <div class="result-stat-item">
+      <span class="rs-value">${timeStr}</span>
+      <span class="rs-label">Time</span>
+    </div>
+  `;
 
   if (won) {
     const prize = state.currentRoom.prize;
@@ -439,6 +500,8 @@ function endGame(won) {
       "Congratulations! You completed a winning pattern!";
     resultPrize.textContent = "+" + prize + " ETB";
     resultPrize.style.display = "block";
+
+    launchConfetti();
 
     if (tg) {
       tg.HapticFeedback.notificationOccurred("success");
@@ -458,6 +521,68 @@ function endGame(won) {
   showScreen("result");
 }
 
+// ─── Confetti ──────────────────────────────────────────────────
+function launchConfetti() {
+  const canvas = document.getElementById("confetti-canvas");
+  const ctx = canvas.getContext("2d");
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const colors = ["#f5a623", "#ffc857", "#ff6b6b", "#4facfe", "#00d68f", "#a855f7", "#f472b6"];
+  const pieces = [];
+
+  for (let i = 0; i < 120; i++) {
+    pieces.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height - canvas.height,
+      w: randomInt(6, 12),
+      h: randomInt(4, 8),
+      color: colors[Math.floor(Math.random() * colors.length)],
+      rotation: Math.random() * 360,
+      rotSpeed: (Math.random() - 0.5) * 8,
+      vx: (Math.random() - 0.5) * 4,
+      vy: randomInt(2, 6),
+      opacity: 1,
+    });
+  }
+
+  let frame = 0;
+  const maxFrames = 180;
+
+  function animate() {
+    if (frame >= maxFrames) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      return;
+    }
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const fadeStart = maxFrames * 0.7;
+
+    pieces.forEach((p) => {
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vy += 0.05;
+      p.rotation += p.rotSpeed;
+      if (frame > fadeStart) {
+        p.opacity = Math.max(0, 1 - (frame - fadeStart) / (maxFrames - fadeStart));
+      }
+
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate((p.rotation * Math.PI) / 180);
+      ctx.globalAlpha = p.opacity;
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+      ctx.restore();
+    });
+
+    frame++;
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+}
+
 // ─── Game Reset ────────────────────────────────────────────────
 function resetGame() {
   state.currentRoom = null;
@@ -466,6 +591,7 @@ function resetGame() {
   state.markedCells = new Set();
   state.calledNumbers = [];
   state.gameActive = false;
+  state.gameStartTime = null;
   clearInterval(state.callerInterval);
   clearInterval(state.countdownInterval);
 
