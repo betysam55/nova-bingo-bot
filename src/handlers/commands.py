@@ -1,6 +1,7 @@
 """Command handlers for the Nova Bingo bot."""
 
 import logging
+import re
 
 from telegram import Update
 from telegram.constants import ParseMode
@@ -8,12 +9,21 @@ from telegram.ext import Application, CommandHandler, ContextTypes
 
 from src.utils import responses
 
+_MD_SPECIAL = re.compile(r"([_*\[\]()~`>#+\-=|{}.!\\])")
+
+
+def _sanitize_markdown(text: str) -> str:
+    """Escape Markdown special characters in untrusted text."""
+    return _MD_SPECIAL.sub(r"\\\1", text)
+
+
 logger = logging.getLogger(__name__)
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     user = update.effective_user
-    name = user.first_name if user else "Player"
+    raw_name = user.first_name if user else "Player"
+    name = _sanitize_markdown(raw_name)
     text = responses.WELCOME.format(name=name)
     if update.message:
         await update.message.reply_text(text, parse_mode=ParseMode.MARKDOWN)
