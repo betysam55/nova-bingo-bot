@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Nova Bingo</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <!-- Confetti Canvas -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <!-- Lobby Screen -->
+  <div id="screen-lobby" class="screen active">
+    <header class="app-header">
+      <div class="logo-group">
+        <div class="logo-icon">🎰</div>
+        <h1>Nova Bingo</h1>
+      </div>
+      <div class="wallet-bar">
+        <div class="wallet-icon-wrap">💰</div>
+        <div class="wallet-info">
+          <span id="wallet-balance">1,000</span>
+          <span class="currency">ETB</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="section-title">
+      <span class="section-icon">🎮</span>
+      <span>Choose a Room</span>
+    </div>
+    <div id="room-list" class="room-list"></div>
+
+    <div class="section-title">
+      <span class="section-icon">🏆</span>
+      <span>Jackpot</span>
+    </div>
+    <div class="jackpot-card">
+      <div class="jackpot-sparkles"></div>
+      <div class="jackpot-content">
+        <div class="jackpot-label">Current Jackpot Prize</div>
+        <div class="jackpot-amount" id="jackpot-amount">25,000 ETB</div>
+        <div class="jackpot-glow-bar"></div>
+      </div>
+    </div>
+
+    <div class="footer-note">🍀 Play responsibly. Never bet more than you can afford.</div>
+  </div>
+
+  <!-- Board Selection Screen -->
+  <div id="screen-boards" class="screen">
+    <header class="app-header">
+      <button class="back-btn" onclick="showScreen('lobby')">
+        <span class="back-arrow">←</span> Back
+      </button>
+      <h2 id="room-title" class="room-title-header">Room</h2>
+    </header>
+
+    <div class="section-title">
+      <span class="section-icon">🎯</span>
+      <span>Pick Your Board</span>
+    </div>
+    <p class="hint-text">Each board is unique. Once selected, it's locked in!</p>
+    <div id="board-options" class="board-options"></div>
+  </div>
+
+  <!-- Game Screen -->
+  <div id="screen-game" class="screen">
+    <header class="game-header">
+      <div class="game-info-row">
+        <div class="game-stat">
+          <span class="stat-icon">👥</span>
+          <div class="stat-data">
+            <span class="stat-value" id="game-players">0</span>
+            <span class="stat-label">Players</span>
+          </div>
+        </div>
+        <div class="game-stat accent">
+          <span class="stat-icon">🏆</span>
+          <div class="stat-data">
+            <span class="stat-value" id="game-prize">0</span>
+            <span class="stat-label">Prize</span>
+          </div>
+        </div>
+        <div class="game-stat">
+          <span class="stat-icon">📢</span>
+          <div class="stat-data">
+            <span class="stat-value" id="game-called-count">0</span>
+            <span class="stat-label">Called</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="called-number-display">
+      <div class="called-label">Current Number</div>
+      <div class="number-ball" id="number-ball">
+        <span id="current-number">--</span>
+      </div>
+    </div>
+
+    <div class="called-numbers-strip" id="called-numbers-strip"></div>
+
+    <div class="bingo-board" id="game-board"></div>
+
+    <button class="bingo-btn" id="bingo-btn" onclick="callBingo()" disabled>
+      <span class="bingo-btn-text">🎉 BINGO!</span>
+    </button>
+
+    <div id="game-status" class="game-status"></div>
+  </div>
+
+  <!-- Result Screen -->
+  <div id="screen-result" class="screen">
+    <div class="result-container">
+      <div class="result-icon" id="result-icon">🎉</div>
+      <h2 class="result-title" id="result-title">You Win!</h2>
+      <p class="result-message" id="result-message"></p>
+      <div class="result-prize" id="result-prize"></div>
+      <div class="result-stats" id="result-stats"></div>
+      <button class="play-again-btn" onclick="showScreen('lobby')">
+        <span>🎮 Play Again</span>
+      </button>
+      <p class="responsible-note">🛡️ Remember to play responsibly!</p>
+    </div>
+  </div>
+
+  <script src="js/game.js"></script>
+</body>
+</html>
